@@ -201,12 +201,115 @@ public class MarkAnalysisChallange {
             System.out.println("Number correct " + i + ": " + (int) percentage + "%");
         }
     }   //showSectionStatistics() method ends
+    
+
     //This method will save the statistics to a txt doc
-    public static void saveSectionStatistics() {
+    public static void saveSectionStatistics() throws InterruptedException {
+        
+        try {
+            String fileName = createFile();
+            //Create file with file name provided
+            File marksFile = new File(fileName);
+
+            //Check if the file allready exists and if not save the new file
+            if (marksFile.createNewFile()) {
+                try (FileWriter fileWrite = new FileWriter(fileName)) {
+                    
+                    //Create arrays to split the each set of marks into each section
+                    int[] section1 = {};
+                    int[] section2 = {};
+                    int[] section3 = {};
+
+                    //This section uses for loops to to count the frequency of results in each section
+                    for (int i = 0; i < 3; i++) {
+                        int zero = 0;
+                        int one = 0;
+                        int two = 0;
+                        int three = 0;
+                        int four = 0;
+                        int five = 0;
+
+                        for (int j = 0; j < marks.size(); j++) {
+                            switch (marks.get(j).charAt(i)) {
+                                case '0' ->
+                                    zero++;
+                                case '1' ->
+                                    one++;
+                                case '2' ->
+                                    two++;
+                                case '3' ->
+                                    three++;
+                                case '4' ->
+                                    four++;
+                                case '5' ->
+                                    five++;
+                            }
+                        }
+                        switch (i)//Use switch statement to populate each section array with the correct results
+                        {
+                            case 0 ->
+                                section1 = new int[]{zero, one, two, 
+                                    three, four, five};
+                            case 1 ->
+                                section2 = new int[]{zero, one, two, 
+                                    three, four, five};
+                            case 2 ->
+                                section3 = new int[]{zero, one, two, 
+                                    three, four, five};
+                        }
+                    }
+                    //Print the percentage of which each result shows up in Section 1
+                    fileWrite.write("\nSection 1:\n");
+                    for (int i = 0; i < section1.length; i++) {
+                        double percentage = (Double.valueOf(section1[i])
+                                / Double.valueOf(marks.size()))
+                                * Double.valueOf(100);
+                        fileWrite.write("Number correct " + i + ": " + 
+                                (int) percentage + "%\n");
+                    }
+
+                    //Print the percentage of which each result shows up in Section 2
+                    fileWrite.write("\nSection 2:\n");
+                    for (int i = 0; i < section2.length; i++) {
+                        double percentage = (Double.valueOf(section2[i])
+                                / Double.valueOf(marks.size()))
+                                * Double.valueOf(100);
+                        fileWrite.write("Number correct " + i + ": " + 
+                                (int) percentage + "%\n");
+                    }
+
+                    //Print the percentage of which each result shows up in Section 3
+                    fileWrite.write("\nSection 3:\n");
+                    for (int i = 0; i < section3.length; i++) {
+                        double percentage = (Double.valueOf(section3[i])
+                                / Double.valueOf(marks.size()))
+                                * Double.valueOf(100);
+                        fileWrite.write("Number correct " + i + ": " + 
+                                (int) percentage + "%\n");
+                    }
+                    
+                }
+                //Tell the user that the file has saved (delay for effect)
+                System.out.println("---------------------------------\n");
+                System.out.print("Saving statistics to " + fileName + "\n");
+                Thread.sleep(250);
+                System.out.print("Saving");
+                load();
+                System.out.println("Statistics successfully saved to '" + fileName + "'.");
+                Thread.sleep(250);
+            } else {
+                //If the file exists tell the user
+                System.out.println("File name already exists.");
+            }
+        } catch (IOException e) {
+            System.out.println("An error ocurred.");
+        }
         
         
-        
-    } //saveSectionStatistics() method ends    
+    } //saveSectionStatistics() method ends  
+    
+    
+    
     //This method will show a breakdown of the pass rates 
     public static void showClassBreakdown() {
         //Create variables to store the persentages of pass rates in a class
@@ -344,7 +447,6 @@ public class MarkAnalysisChallange {
                         //Save each mark to a new line
                         fileWrite.write(marks.get(i) + "\n");
                     }
-                    //Close file writer
                 }
                 //Tell the user that the file has saved (delay for effect)
                 System.out.println("---------------------------------\n");
@@ -400,16 +502,19 @@ public class MarkAnalysisChallange {
     public static String createFile(){
         //Create var for holding the file name
         String fileName;
+        String txtCheck = "";
         //Get the file name the user would like to use
         System.out.print("Please enter a file name >");
         fileName = userIn.next();
+        if(fileName.length() > 4){
         //Get the last 4 characters of the string to check for the file extension
-        String txtCheck = fileName.substring(fileName.length() - 4);
-
+        txtCheck = fileName.substring(fileName.length() - 4);
+        }
         if (!".txt".equals(txtCheck)) {
             //If the file name entered doesnt have a .txt file extension add one
             fileName += ".txt";
         }
+        
         return fileName;
    }
 }
