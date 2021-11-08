@@ -22,11 +22,8 @@ public class MarkAnalysisChallange {
 
     //Main body
     public static void main(String[] args) throws InterruptedException {
-        //Create variables
-        boolean userActive = true;
-
         //Starts the program loop
-        while (userActive) {
+        while (true) {
             //Calls the menu method and uses the users choice to decide what to run next
             String choice = menu();
             switch (choice)//Takes users choice and runs the appropriate code
@@ -37,8 +34,8 @@ public class MarkAnalysisChallange {
                 //Runs the showSectionStatistics method to break down the correct rates
                 case "2" ->
                     showSectionStatistics();
-                case "3" -> 
-                    saveSectionStatistics();
+                case "3" ->
+                    saveStatistics();
                 //Shows the pass/fail rates of the class
                 case "4" ->
                     showClassBreakdown();
@@ -87,6 +84,7 @@ public class MarkAnalysisChallange {
         return choice;  //Return the users choice to main
     }   //menu() method ends here
     //Let the user enter marks and add them to the ArrayList
+
     public static void enterMarks() throws InterruptedException {
         //Create variables
         boolean exit = false;// Used to exit loop
@@ -122,7 +120,7 @@ public class MarkAnalysisChallange {
                         && (Character.getNumericValue(inMark.charAt(1)) >= 0))
                         && ((Character.getNumericValue(inMark.charAt(2)) <= 5)
                         && (Character.getNumericValue(inMark.charAt(2)) >= 0))) {
-                                            // Add the valid mark to the ArrayList
+                    // Add the valid mark to the ArrayList
                     marks.add(inMark);
                     System.out.println("Mark entered.");
                 } else {
@@ -133,7 +131,8 @@ public class MarkAnalysisChallange {
         }
     }   //enterMarks() method ends here
     //This will display how many students got each possible mark in each section
-    public static void showSectionStatistics() {
+
+    public static void showSectionStatistics() throws InterruptedException {
         //Create arrays to split the each set of marks into each section
         int[] section1 = {};
         int[] section2 = {};
@@ -200,12 +199,18 @@ public class MarkAnalysisChallange {
                     * Double.valueOf(100);
             System.out.println("Number correct " + i + ": " + (int) percentage + "%");
         }
+        System.out.print("\nDo you want to save results <y or n>? >>");
+        String wantsToSave = userIn.next();
+        if ("y".equalsIgnoreCase(wantsToSave)) {
+            saveStatistics();
+        } else if ("n".equalsIgnoreCase(wantsToSave)) {
+            System.out.println("Exiting without saving...");
+        }
     }   //showSectionStatistics() method ends
-    
-
     //This method will save the statistics to a txt doc
-    public static void saveSectionStatistics() throws InterruptedException {
-        
+
+    public static void saveStatistics() throws InterruptedException {
+
         try {
             String fileName = createFile();
             //Create file with file name provided
@@ -214,7 +219,7 @@ public class MarkAnalysisChallange {
             //Check if the file allready exists and if not save the new file
             if (marksFile.createNewFile()) {
                 try (FileWriter fileWrite = new FileWriter(fileName)) {
-                    
+
                     //Create arrays to split the each set of marks into each section
                     int[] section1 = {};
                     int[] section2 = {};
@@ -248,13 +253,13 @@ public class MarkAnalysisChallange {
                         switch (i)//Use switch statement to populate each section array with the correct results
                         {
                             case 0 ->
-                                section1 = new int[]{zero, one, two, 
+                                section1 = new int[]{zero, one, two,
                                     three, four, five};
                             case 1 ->
-                                section2 = new int[]{zero, one, two, 
+                                section2 = new int[]{zero, one, two,
                                     three, four, five};
                             case 2 ->
-                                section3 = new int[]{zero, one, two, 
+                                section3 = new int[]{zero, one, two,
                                     three, four, five};
                         }
                     }
@@ -264,8 +269,8 @@ public class MarkAnalysisChallange {
                         double percentage = (Double.valueOf(section1[i])
                                 / Double.valueOf(marks.size()))
                                 * Double.valueOf(100);
-                        fileWrite.write("Number correct " + i + ": " + 
-                                (int) percentage + "%\n");
+                        fileWrite.write("Number correct " + i + ": "
+                                + (int) percentage + "%\n");
                     }
 
                     //Print the percentage of which each result shows up in Section 2
@@ -274,8 +279,8 @@ public class MarkAnalysisChallange {
                         double percentage = (Double.valueOf(section2[i])
                                 / Double.valueOf(marks.size()))
                                 * Double.valueOf(100);
-                        fileWrite.write("Number correct " + i + ": " + 
-                                (int) percentage + "%\n");
+                        fileWrite.write("Number correct " + i + ": "
+                                + (int) percentage + "%\n");
                     }
 
                     //Print the percentage of which each result shows up in Section 3
@@ -284,10 +289,10 @@ public class MarkAnalysisChallange {
                         double percentage = (Double.valueOf(section3[i])
                                 / Double.valueOf(marks.size()))
                                 * Double.valueOf(100);
-                        fileWrite.write("Number correct " + i + ": " + 
-                                (int) percentage + "%\n");
+                        fileWrite.write("Number correct " + i + ": "
+                                + (int) percentage + "%\n");
                     }
-                    
+
                 }
                 //Tell the user that the file has saved (delay for effect)
                 System.out.println("---------------------------------\n");
@@ -304,13 +309,9 @@ public class MarkAnalysisChallange {
         } catch (IOException e) {
             System.out.println("An error ocurred.");
         }
-        
-        
     } //saveSectionStatistics() method ends  
-    
-    
-    
     //This method will show a breakdown of the pass rates 
+
     public static void showClassBreakdown() {
         //Create variables to store the persentages of pass rates in a class
         int fullMarks = 0;
@@ -391,6 +392,7 @@ public class MarkAnalysisChallange {
                 * Double.valueOf(100)) + "%");
     }//showClassBreakdown() method ends
     //This method loads the marks from a text file into array
+
     public static void loadMarks() throws InterruptedException {
         //Ask the user for the file name of the file they would like to open
         System.out.print("Please enter the file you would like to load \n>>");
@@ -432,8 +434,9 @@ public class MarkAnalysisChallange {
         }
     }//loadMarks() method ends
     //This method saves the marks currently stored in the marks arraylist 
+
     public static void saveMarks() throws InterruptedException {
-        
+
         try {
             String fileName = createFile();
             //Create file with file name provided
@@ -467,6 +470,7 @@ public class MarkAnalysisChallange {
         }
     }//saveMarks() method ends 
     //This will clear the marks from memory
+
     public static void clearMarks() {
         //Note the array size
         int size = marks.size();
@@ -481,40 +485,42 @@ public class MarkAnalysisChallange {
 
     }//clearMarks() method ends
     //This will exit the program
+
     public static void quit() {
         //Prints a final message then ends the program
         System.out.println("Thanks for using CSF marks analysis\nGoodbye.");
         System.exit(0);
     }//quit() method ends
-    
+
     /*----Extra Methods----*/
     //This method just prints three dots
-    public static void load() throws InterruptedException{
-       Thread.sleep(250);
-        System.out.print(".");
+    public static void load() throws InterruptedException {
         Thread.sleep(250);
         System.out.print(".");
         Thread.sleep(250);
         System.out.print(".");
         Thread.sleep(250);
-   }
+        System.out.print(".");
+        Thread.sleep(250);
+    }
+
     //This method creates files
-    public static String createFile(){
+    public static String createFile() {
         //Create var for holding the file name
         String fileName;
         String txtCheck = "";
         //Get the file name the user would like to use
         System.out.print("Please enter a file name >");
         fileName = userIn.next();
-        if(fileName.length() > 4){
-        //Get the last 4 characters of the string to check for the file extension
-        txtCheck = fileName.substring(fileName.length() - 4);
+        if (fileName.length() > 4) {
+            //Get the last 4 characters of the string to check for the file extension
+            txtCheck = fileName.substring(fileName.length() - 4);
         }
         if (!".txt".equals(txtCheck)) {
             //If the file name entered doesnt have a .txt file extension add one
             fileName += ".txt";
         }
-        
+
         return fileName;
-   }
+    }
 }
