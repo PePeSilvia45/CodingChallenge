@@ -147,8 +147,8 @@ public class MarkAnalysisChallange {
             int four = 0;
             int five = 0;
 
-            for (int j = 0; j < marks.size(); j++) {
-                switch (marks.get(j).charAt(i)) {
+            for (String mark : marks) {
+                switch (mark.charAt(i)) {
                     case '0' ->
                         zero++;
                     case '1' ->
@@ -174,31 +174,36 @@ public class MarkAnalysisChallange {
             }
         }
         //Print the percentage of which each result shows up in Section 1
+        int i = 0;
         System.out.println("\nSection 1:");
-        for (int i = 0; i < section1.length; i++) {
-            double percentage = (Double.valueOf(section1[i])
+        for (int mark : section1) {
+            double percentage = (Double.valueOf(mark)
                     / Double.valueOf(marks.size()))
                     * Double.valueOf(100);
             System.out.println("Number correct " + i + ": " + (int) percentage + "%");
+            i++;
         }
-
+        i=0;
         //Print the percentage of which each result shows up in Section 2
         System.out.println("\nSection 2:");
-        for (int i = 0; i < section2.length; i++) {
-            double percentage = (Double.valueOf(section2[i])
+        for (int mark : section2) {
+            double percentage = (Double.valueOf(mark)
                     / Double.valueOf(marks.size()))
                     * Double.valueOf(100);
             System.out.println("Number correct " + i + ": " + (int) percentage + "%");
+            i++;
         }
-
+        i=0;
         //Print the percentage of which each result shows up in Section 3
         System.out.println("\nSection 3:");
-        for (int i = 0; i < section3.length; i++) {
-            double percentage = (Double.valueOf(section3[i])
+        for (int mark : section3) {
+            double percentage = (Double.valueOf(mark)
                     / Double.valueOf(marks.size()))
                     * Double.valueOf(100);
             System.out.println("Number correct " + i + ": " + (int) percentage + "%");
+            i++;
         }
+        i=0;
         System.out.print("\nDo you want to save results <y or n>? >>");
         String wantsToSave = userIn.next();
         if ("y".equalsIgnoreCase(wantsToSave)) {
@@ -234,8 +239,8 @@ public class MarkAnalysisChallange {
                         int four = 0;
                         int five = 0;
 
-                        for (int j = 0; j < marks.size(); j++) {
-                            switch (marks.get(j).charAt(i)) {
+                        for (String mark : marks) {
+                            switch (mark.charAt(i)) {
                                 case '0' ->
                                     zero++;
                                 case '1' ->
@@ -264,35 +269,39 @@ public class MarkAnalysisChallange {
                         }
                     }
                     //Print the percentage of which each result shows up in Section 1
+                    int i = 0;
                     fileWrite.write("\nSection 1:\n");
-                    for (int i = 0; i < section1.length; i++) {
-                        double percentage = (Double.valueOf(section1[i])
+                    for (int mark : section1) {
+                        double percentage = (Double.valueOf(mark)
                                 / Double.valueOf(marks.size()))
                                 * Double.valueOf(100);
                         fileWrite.write("Number correct " + i + ": "
                                 + (int) percentage + "%\n");
+                        i++;
                     }
-
+                    i=0;    
                     //Print the percentage of which each result shows up in Section 2
                     fileWrite.write("\nSection 2:\n");
-                    for (int i = 0; i < section2.length; i++) {
-                        double percentage = (Double.valueOf(section2[i])
+                    for (int mark : section2) {
+                        double percentage = (Double.valueOf(mark)
                                 / Double.valueOf(marks.size()))
                                 * Double.valueOf(100);
                         fileWrite.write("Number correct " + i + ": "
                                 + (int) percentage + "%\n");
+                        i++;
                     }
-
+                    i=0;
                     //Print the percentage of which each result shows up in Section 3
                     fileWrite.write("\nSection 3:\n");
-                    for (int i = 0; i < section3.length; i++) {
-                        double percentage = (Double.valueOf(section3[i])
+                    for (int mark : section3) {
+                        double percentage = (Double.valueOf(mark)
                                 / Double.valueOf(marks.size()))
                                 * Double.valueOf(100);
                         fileWrite.write("Number correct " + i + ": "
                                 + (int) percentage + "%\n");
+                        i++;
                     }
-
+                    i=0;
                 }
                 //Tell the user that the file has saved (delay for effect)
                 System.out.println("---------------------------------\n");
@@ -323,25 +332,25 @@ public class MarkAnalysisChallange {
 
         /*Use for loop to loop through the results to Find how many got full
           marks and how many landed on the pass line*/
-        for (int i = 0; i < marks.size(); i++) {
-            if ("555".equals(marks.get(i))) {
+        for (String mark : marks) {
+            if ("555".equals(mark)) {
                 fullMarks++;
-            } else if ("333".equals(marks.get(i))) {
+            } else if ("333".equals(mark)) {
                 borderLine++;
             }
         }
 
         //This loop checks if the value in each section is 3 or more for each
-        for (int i = 0; i < marks.size(); i++) {
-            if ((3 <= Character.getNumericValue(marks.get(i).charAt(0)))
-                    && (3 <= Character.getNumericValue(marks.get(i).charAt(1)))
-                    && (3 <= Character.getNumericValue(marks.get(i).charAt(2)))) {
+        for (String mark : marks) {
+            if ((3 <= Character.getNumericValue(mark.charAt(0)))
+                    && (3 <= Character.getNumericValue(mark.charAt(1)))
+                    && (3 <= Character.getNumericValue(mark.charAt(2)))) {
                 fullPaper++;
             }
         }
 
         //This loop checks to see how many times each section was failed
-        for (int i = 0; i < marks.size(); i++) {
+        for (int i = 0; i < 3; i++) {
             for (int j = 0; j < marks.get(i).length(); j++) {
                 switch (i) {
                     case 0 -> {
