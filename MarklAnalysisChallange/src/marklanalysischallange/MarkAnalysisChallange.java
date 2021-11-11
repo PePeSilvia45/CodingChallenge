@@ -203,7 +203,6 @@ public class MarkAnalysisChallange {
             System.out.println("Number correct " + i + ": " + (int) percentage + "%");
             i++;
         }
-        i=0;
         System.out.print("\nDo you want to save results <y or n>? >>");
         String wantsToSave = userIn.next();
         if ("y".equalsIgnoreCase(wantsToSave)) {
@@ -301,7 +300,6 @@ public class MarkAnalysisChallange {
                                 + (int) percentage + "%\n");
                         i++;
                     }
-                    i=0;
                 }
                 //Tell the user that the file has saved (delay for effect)
                 System.out.println("---------------------------------\n");
@@ -422,16 +420,16 @@ public class MarkAnalysisChallange {
                 File marksFile = new File(fileName);
                 //Open file reader
                 System.out.println(fileName + " Opened.");
-                Scanner fileReader = new Scanner(marksFile);
-                while (fileReader.hasNextLine()) {
-                    marks.add(fileReader.nextLine());
-                    lines++;
+                try (Scanner fileReader = new Scanner(marksFile)) {
+                    while (fileReader.hasNextLine()) {
+                        marks.add(fileReader.nextLine());
+                        lines++;
+                    }
+                    Thread.sleep(250);
+                    System.out.print("Loading");
+                    load();
+                    System.out.println(lines + " Student marks imported to memory.");
                 }
-                Thread.sleep(250);
-                System.out.print("Loading");
-                load();
-                System.out.println(lines + " Student marks imported to memory.");
-                fileReader.close();
                 System.out.println(fileName + " closed.");
                 //Set the name of the current file in memory
                 currentFileInMemory = fileName;
