@@ -308,7 +308,6 @@ public class MarkAnalysisChallange {
                     }
                 }
                 //Tell the user that the file has saved (delay for effect)
-                System.out.println("---------------------------------\n");
                 System.out.print("Saving statistics to " + fileName + "\n");
                 Thread.sleep(250);
                 System.out.print("Saving");
@@ -456,9 +455,9 @@ public class MarkAnalysisChallange {
                     }
 
                     //This loop checks to see how many times each section was failed
-                    for (int i = 0; i < 3; i++) {
+                    for (int i = 0; i < marks.size(); i++) {
                         for (int j = 0; j < marks.get(i).length(); j++) {
-                            switch (i) {
+                            switch (j) {
                                 case 0 -> {
                                     if (Character.getNumericValue(marks.get(i).charAt(j)) < 3) {
                                         failSec1++;
@@ -506,7 +505,6 @@ public class MarkAnalysisChallange {
                             / Double.valueOf(marks.size()))
                             * Double.valueOf(100)) + "%\n");
                     //Tell the user that the file has saved (delay for effect)
-                    System.out.println("---------------------------------\n");
                     System.out.print("Saving Breakdown to " + fileName + "\n");
                     Thread.sleep(250);
                     System.out.print("Saving");

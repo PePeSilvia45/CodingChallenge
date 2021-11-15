@@ -1,6 +1,6 @@
 Full Marks 555: 7%
 Borderline 333: 7%
 Full paper pass all sections >=3: 42%
-failed Section 1 less than 3: 0%
-failed Section 2 less than 3: 0%
-failed Section 3 less than 3: 0%
+failed Section 1 less than 3: 50%
+failed Section 2 less than 3: 28%
+failed Section 3 less than 3: 28%
