@@ -31,25 +31,29 @@ public class MarkAnalysisChallange {
                 //Runs the enterMarks method used to populate the marks ArrayList
                 case "1" ->
                     enterMarks();
-                //Runs the showSectionStatistics method to break down the correct rates
-                case "2" ->
-                    showSectionStatistics();
-                case "3" ->
-                    saveStatistics();
-                //Shows the pass/fail rates of the class
-                case "4" ->
-                    showClassBreakdown();
                 //Loads the marks into memory
-                case "5" ->
+                case "2" ->
                     loadMarks();
-                //Saves the marks currently stored
-                case "6" ->
-                    saveMarks();
-                //Quits the program
-                case "7" ->
+                //Clears the marks in memory
+                case "3" ->
                     clearMarks();
-                //Quits the program
+                //saves the current marks in memory
+                case "4" ->
+                    saveMarks();
+                //Runs the showSectionStatistics method to break down the correct rates
+                case "5" ->
+                    showSectionStatistics();
+                //Saves the statistics of the class
+                case "6" ->
+                    saveStatistics();
+                //Shows a breakdown of the class results 
+                case "7" ->
+                    showClassBreakdown();
+                //Saves the breakdown of the results
                 case "8" ->
+                    saveBreakdown();
+                //Quits the program
+                case "9" ->
                     quit();
                 //If an item from the menu was not chosen ask the user to choose again
                 default -> {
@@ -69,14 +73,15 @@ public class MarkAnalysisChallange {
                            ---------------------------------
                              Welcome to CDF marks analysis 
                            ---------------------------------                   
-                             1) Enter marks                
-                             2) Show section statistics  
-                             3) Save section statistics
-                             4) Show class breakdown       
-                             5) Load marks
-                             6) Save marks
-                             7) Clear marks
-                             8) Quit                       
+                             1) Enter Marks                
+                             2) Load Marks   
+                             3) Clear Marks 
+                             4) Save Marks  
+                             5) Show Section Statistics
+                             6) Save Section Statistics
+                             7) Show Class Breakdown
+                             8) Save Class Breakdown
+                             9) Quit                       
                            ---------------------------------""";
         System.out.println(menu);//Print the menu variable
         System.out.print(">>");
@@ -183,7 +188,7 @@ public class MarkAnalysisChallange {
             System.out.println("Number correct " + i + ": " + (int) percentage + "%");
             i++;
         }
-        i=0;
+        i = 0;
         //Print the percentage of which each result shows up in Section 2
         System.out.println("\nSection 2:");
         for (int mark : section2) {
@@ -193,7 +198,7 @@ public class MarkAnalysisChallange {
             System.out.println("Number correct " + i + ": " + (int) percentage + "%");
             i++;
         }
-        i=0;
+        i = 0;
         //Print the percentage of which each result shows up in Section 3
         System.out.println("\nSection 3:");
         for (int mark : section3) {
@@ -210,6 +215,7 @@ public class MarkAnalysisChallange {
         } else if ("n".equalsIgnoreCase(wantsToSave)) {
             System.out.println("Exiting without saving...");
         }
+
     }   //showSectionStatistics() method ends
     //This method will save the statistics to a txt doc
 
@@ -278,7 +284,7 @@ public class MarkAnalysisChallange {
                                 + (int) percentage + "%\n");
                         i++;
                     }
-                    i=0;    
+                    i = 0;
                     //Print the percentage of which each result shows up in Section 2
                     fileWrite.write("\nSection 2:\n");
                     for (int mark : section2) {
@@ -289,7 +295,7 @@ public class MarkAnalysisChallange {
                                 + (int) percentage + "%\n");
                         i++;
                     }
-                    i=0;
+                    i = 0;
                     //Print the percentage of which each result shows up in Section 3
                     fileWrite.write("\nSection 3:\n");
                     for (int mark : section3) {
@@ -319,7 +325,7 @@ public class MarkAnalysisChallange {
     } //saveSectionStatistics() method ends  
     //This method will show a breakdown of the pass rates 
 
-    public static void showClassBreakdown() {
+    public static void showClassBreakdown() throws InterruptedException {
         //Create variables to store the persentages of pass rates in a class
         int fullMarks = 0;
         int borderLine = 0;
@@ -346,28 +352,32 @@ public class MarkAnalysisChallange {
                 fullPaper++;
             }
         }
-
-        //This loop checks to see how many times each section was failed
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < marks.get(i).length(); j++) {
-                switch (i) {
-                    case 0 -> {
-                        if (Character.getNumericValue(marks.get(i).charAt(j)) < 3) {
-                            failSec1++;
+        try {
+            //!!!!!------THIS NEEDS FIXED NOT COUNTED LOADED FILES CORRECTLY-----!!!!
+            //This loop checks to see how many times each section was failed
+            for (int i = 0; i < marks.size(); i++) {
+                for (int j = 0; j < marks.get(i).length(); j++) {
+                    int sectionMark = Character.getNumericValue(marks.get(i).charAt(j));
+                    switch (j) {
+                        case 0 -> {
+                            if (sectionMark < 3) {
+                                failSec1++;
+                            }
                         }
-                    }
-                    case 1 -> {
-                        if (Character.getNumericValue(marks.get(i).charAt(j)) < 3) {
-                            failSec2++;
+                        case 1 -> {
+                            if (sectionMark < 3) {
+                                failSec2++;
+                            }
                         }
-                    }
-                    case 2 -> {
-                        if (Character.getNumericValue(marks.get(i).charAt(j)) < 3) {
-                            failSec3++;
+                        case 2 -> {
+                            if (sectionMark < 3) {
+                                failSec3++;
+                            }
                         }
                     }
                 }
             }
+        } catch (Exception e) {
         }
         //Prints each value to the console
         System.out.println("Full Marks 555: " + (int) ((Double.valueOf(fullMarks)
@@ -397,8 +407,122 @@ public class MarkAnalysisChallange {
                 + (int) ((Double.valueOf(failSec3)
                 / Double.valueOf(marks.size()))
                 * Double.valueOf(100)) + "%");
+        System.out.print("\nDo you want to save results <y or n>? >>");
+        String wantsToSave = userIn.next();
+        if ("y".equalsIgnoreCase(wantsToSave)) {
+            saveBreakdown();
+        } else if ("n".equalsIgnoreCase(wantsToSave)) {
+            System.out.println("Exiting without saving...");
+        }
     }//showClassBreakdown() method ends
     //This method loads the marks from a text file into array
+
+    public static void saveBreakdown() throws InterruptedException {
+
+        try {
+            String fileName = createFile();
+            //Create file with file name provided
+            File marksFile = new File(fileName);
+
+            //Check if the file allready exists and if not save the new file
+            if (marksFile.createNewFile()) {
+                try (FileWriter fileWrite = new FileWriter(fileName)) {
+
+                    //Create variables to store the persentages of pass rates in a class
+                    int fullMarks = 0;
+                    int borderLine = 0;
+                    int fullPaper = 0;
+                    int failSec1 = 0;
+                    int failSec2 = 0;
+                    int failSec3 = 0;
+
+                    /*Use for loop to loop through the results to Find how many got full
+          marks and how many landed on the pass line*/
+                    for (String mark : marks) {
+                        if ("555".equals(mark)) {
+                            fullMarks++;
+                        } else if ("333".equals(mark)) {
+                            borderLine++;
+                        }
+                    }
+
+                    //This loop checks if the value in each section is 3 or more for each
+                    for (String mark : marks) {
+                        if ((3 <= Character.getNumericValue(mark.charAt(0)))
+                                && (3 <= Character.getNumericValue(mark.charAt(1)))
+                                && (3 <= Character.getNumericValue(mark.charAt(2)))) {
+                            fullPaper++;
+                        }
+                    }
+
+                    //This loop checks to see how many times each section was failed
+                    for (int i = 0; i < 3; i++) {
+                        for (int j = 0; j < marks.get(i).length(); j++) {
+                            switch (i) {
+                                case 0 -> {
+                                    if (Character.getNumericValue(marks.get(i).charAt(j)) < 3) {
+                                        failSec1++;
+                                    }
+                                }
+                                case 1 -> {
+                                    if (Character.getNumericValue(marks.get(i).charAt(j)) < 3) {
+                                        failSec2++;
+                                    }
+                                }
+                                case 2 -> {
+                                    if (Character.getNumericValue(marks.get(i).charAt(j)) < 3) {
+                                        failSec3++;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    //Prints each value to the console
+                    fileWrite.write("Full Marks 555: " + (int) ((Double.valueOf(fullMarks)
+                            / Double.valueOf(marks.size()))
+                            * Double.valueOf(100)) + "%\n");
+
+                    fileWrite.write("Borderline 333: " + (int) ((Double.valueOf(borderLine)
+                            / Double.valueOf(marks.size()))
+                            * Double.valueOf(100)) + "%\n");
+
+                    fileWrite.write("Full paper pass all sections >=3: "
+                            + (int) ((Double.valueOf(fullPaper)
+                            / Double.valueOf(marks.size()))
+                            * Double.valueOf(100)) + "%\n");
+
+                    fileWrite.write("failed Section 1 less than 3: "
+                            + (int) ((Double.valueOf(failSec1)
+                            / Double.valueOf(marks.size()))
+                            * Double.valueOf(100)) + "%\n");
+
+                    fileWrite.write("failed Section 2 less than 3: "
+                            + (int) ((Double.valueOf(failSec2)
+                            / Double.valueOf(marks.size()))
+                            * Double.valueOf(100)) + "%\n");
+
+                    fileWrite.write("failed Section 3 less than 3: "
+                            + (int) ((Double.valueOf(failSec3)
+                            / Double.valueOf(marks.size()))
+                            * Double.valueOf(100)) + "%\n");
+                    //Tell the user that the file has saved (delay for effect)
+                    System.out.println("---------------------------------\n");
+                    System.out.print("Saving Breakdown to " + fileName + "\n");
+                    Thread.sleep(250);
+                    System.out.print("Saving");
+                    load();
+                    System.out.println("Breakdown successfully saved to '" + fileName + "'.");
+                    Thread.sleep(250);
+                }
+            } else {
+                //If the file exists tell the user
+                System.out.println("File name already exists.");
+            }
+        } catch (IOException e) {
+            System.out.println("An error ocurred.");
+        }
+    }
+    //saveClassBreakDown() method ends 
 
     public static void loadMarks() throws InterruptedException {
         //Ask the user for the file name of the file they would like to open
